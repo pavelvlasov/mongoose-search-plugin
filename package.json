@@ -1,0 +1,27 @@
+{
+  "name": "mongoose-search-plugin",
+  "version": "0.0.1",
+  "description": "mongoose full-text search plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/index.js"
+  },
+  "keywords": [
+    "mongoose",
+    "search",
+    "plugin",
+    "full",
+    "text"
+  ],
+  "author": "Pavel Vlasov <freakycue@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "natural": "0.1.25",
+    "underscore": "~1.5.2",
+    "mongoose": "~3.8.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "expect.js": "~0.2.0"
+  }
+}
