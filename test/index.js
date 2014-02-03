@@ -129,6 +129,10 @@ describe('search plugin', function() {
 		});
 	});
 
+	it('test setKeywords method', function(done) {
+		TestModel.setKeywords(done);
+	});
+
 	it('clear test collection', function(done) {
 		TestModel.remove({}, done);
 	});
