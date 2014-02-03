@@ -136,4 +136,8 @@ describe('search plugin', function() {
 	it('clear test collection', function(done) {
 		TestModel.remove({}, done);
 	});
+
+	it('setKeywords on empty collection', function(done) {
+		TestModel.setKeywords(done);
+	});
 });

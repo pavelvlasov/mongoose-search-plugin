@@ -104,15 +104,19 @@ module.exports = function(schema, options) {
 			if (err) return callback(err);
 
 			var len = docs.length;
-			docs.forEach(function(doc, index) {
-				doc.updateKeywords();
+			if (len) {
+				docs.forEach(function(doc, index) {
+					doc.updateKeywords();
 
-				doc.save(function(err) {
-					if (err) console.log('[mongoose search plugin err] ', err, err.stack);
+					doc.save(function(err) {
+						if (err) console.log('[mongoose search plugin err] ', err, err.stack);
 
-					if (!(--len)) return callback(null);
+						if (!(--len)) return callback(null);
+					});
 				});
-			});
+			} else {
+				callback();
+			}
 		});
 	};
 
