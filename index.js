@@ -103,15 +103,16 @@ module.exports = function(schema, options) {
 		mongoose.Model.find.call(this, {}, function(err, docs) {
 			if (err) return callback(err);
 
-			var len = docs.length;
-			if (len) {
-				docs.forEach(function(doc, index) {
+			if (docs.length) {
+				var done = _.after(docs.length, function() {
+					callback();
+				});
+				docs.forEach(function(doc) {
 					doc.updateKeywords();
 
 					doc.save(function(err) {
 						if (err) console.log('[mongoose search plugin err] ', err, err.stack);
-
-						if (!(--len)) return callback(null);
+						done();
 					});
 				});
 			} else {
