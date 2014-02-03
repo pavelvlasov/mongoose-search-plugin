@@ -42,6 +42,7 @@ module.exports = function(schema, options) {
 		mongoose.Model.find.call(this, conditions, outFields, function(err, docs) {
 			if (err) return callback(err);
 
+			var totalCount = docs.length;
 			// count relevance and sort results
 			docs = _(docs).sortBy(function(doc) {
 				var relevance = processRelevance(tokens, doc.get(keywordsPath));
@@ -64,11 +65,14 @@ module.exports = function(schema, options) {
 				if (err) return callback(err);
 
 				// sort result docs
-				callback(null, _(docs).sortBy(function(doc) {
-					var relevance = docsHash[doc._id].get(relevancePath);
-					doc.set(relevancePath, relevance);
-					return relevance;
-				}));
+				callback(null, {
+					results: _(docs).sortBy(function(doc) {
+						var relevance = docsHash[doc._id].get(relevancePath);
+						doc.set(relevancePath, relevance);
+						return relevance;
+					}),
+					totalCount: totalCount
+				});
 			});
 		});
 

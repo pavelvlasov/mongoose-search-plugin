@@ -37,43 +37,43 @@ describe('search plugin', function() {
 	});
 
 	it('search should return both objects', function(done) {
-		TestModel.search('object', null, null, function(err, objs) {
+		TestModel.search('object', null, null, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs).to.be.ok();
-			expect(objs.length).to.be.ok();
-			expect(objs.length).to.equal(2);
+			expect(data.results).to.be.ok();
+			expect(data.results.length).to.be.ok();
+			expect(data.results.length).to.equal(2);
 
 			done(err);
 		});
 	});
 
 	it('search should return first object', function(done) {
-		TestModel.search('search', null, null, function(err, objs) {
+		TestModel.search('search', null, null, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs).to.be.ok();
-			expect(objs.length).to.be.ok();
-			expect(objs.length).to.equal(1);
+			expect(data.results).to.be.ok();
+			expect(data.results.length).to.be.ok();
+			expect(data.results.length).to.equal(1);
 
 			done(err);
 		});
 	});
 
 	it('search should return second object', function(done) {
-		TestModel.search('find', null, null, function(err, objs) {
+		TestModel.search('find', null, null, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs).to.be.ok();
-			expect(objs.length).to.be.ok();
-			expect(objs.length).to.equal(1);
+			expect(data.results).to.be.ok();
+			expect(data.results.length).to.be.ok();
+			expect(data.results.length).to.equal(1);
 
 			done(err);
 		});
 	});
 
 	it('search should return no objects', function(done) {
-		TestModel.search('unexpected tokens', null, null, function(err, objs) {
+		TestModel.search('unexpected tokens', null, null, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs).to.be.ok();
-			expect(objs.length).to.equal(0);
+			expect(data.results).to.be.ok();
+			expect(data.results.length).to.equal(0);
 
 			done(err);
 		});
@@ -93,37 +93,40 @@ describe('search plugin', function() {
 
 	var allCount;
 	it('search all objects with outfields', function(done) {
-		TestModel.search('object', {title: 0}, function(err, objs) {
+		TestModel.search('object', {title: 0}, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs[0].title).not.to.be.ok();
+			expect(data.results[0].title).not.to.be.ok();
 
-			allCount = objs.length;
+			allCount = data.results.length;
 			done(err);
 		});
 	});
 
 	it('search with limit option', function(done) {
-		TestModel.search('object', null, {limit: 3}, function(err, objs) {
+		TestModel.search('object', null, {limit: 3}, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs.length).to.equal(3);
+			expect(data.results.length).to.equal(3);
+			expect(data.totalCount).to.equal(allCount)
 
 			done(err);
 		});
 	});
 
 	it('search with skip option', function(done) {
-		TestModel.search('object', null, {skip: 2}, function(err, objs) {
+		TestModel.search('object', null, {skip: 2}, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs.length).to.equal(allCount - 2);
+			expect(data.results.length).to.equal(allCount - 2);
+			expect(data.totalCount).to.equal(allCount)
 
 			done(err);
 		});
 	});
 
 	it('search with limit and skip option', function(done) {
-		TestModel.search('object', null, {skip: 2, limit: 2}, function(err, objs) {
+		TestModel.search('object', null, {skip: 2, limit: 2}, function(err, data) {
 			expect(err).not.to.be.ok();
-			expect(objs.length).to.equal(2);
+			expect(data.results.length).to.equal(2);
+			expect(data.totalCount).to.equal(allCount)
 
 			done(err);
 		});
