@@ -1,1 +1,1 @@
-Mongoose full test search plugin
+Mongoose full text search plugin
