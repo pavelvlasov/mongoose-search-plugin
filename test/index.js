@@ -1,7 +1,8 @@
 'use strict';
 
 var expect = require('expect.js'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	_ = require('underscore');
 
 require('./testModel');
 
@@ -128,6 +129,29 @@ describe('search plugin', function() {
 			expect(data.results.length).to.equal(2);
 			expect(data.totalCount).to.equal(allCount)
 
+			done(err);
+		});
+	});
+
+	it('search with sort option', function(done) {
+		TestModel.search('object', null, {sort: {index: 1}}, function(err, data) {
+			var min = data.results[0].index;
+			expect(_(data.results).all(function(item) {
+				var res = item.index >= min;
+				min = item.index;
+				return res;
+			})).to.be.ok();
+			done(err);
+		});
+	});
+
+	it('search with conditions option', function(done) {
+		TestModel.search('object', null, {
+			conditions: {index: {$gt: 50}}
+		}, function(err, data) {
+			expect(_(data.results).all(function(item) {
+				return item.index > 50;
+			})).to.be.ok();
 			done(err);
 		});
 	});

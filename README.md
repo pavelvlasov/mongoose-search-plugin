@@ -1,1 +1,3 @@
-Mongoose full text search plugin
+# Mongoose full-text search plugin
+
+License: MIT

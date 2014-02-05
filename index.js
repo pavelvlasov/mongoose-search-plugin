@@ -19,11 +19,6 @@ module.exports = function(schema, options) {
 
 	// search method
 	schema.statics.search = function(query, fields, options, callback) {
-		var self = this;
-		var tokens = _(stemmer.tokenizeAndStem(query)).unique(),
-			conditions = {},
-			outFields = {_id: 1};
-
 		if (arguments.length === 2) {
 			callback = fields;
 			options = {};
@@ -36,18 +31,26 @@ module.exports = function(schema, options) {
 			}
 		}
 
+		var self = this;
+		var tokens = _(stemmer.tokenizeAndStem(query)).unique(),
+			conditions = options.conditions || {},
+			outFields = {_id: 1},
+			findOptions = _(options).pick('sort');
+
 		conditions[keywordsPath] = {$in: tokens};
 		outFields[keywordsPath] = 1;
 
-		mongoose.Model.find.call(this, conditions, outFields, function(err, docs) {
+		mongoose.Model.find.call(this, conditions, outFields, findOptions, function(err, docs) {
 			if (err) return callback(err);
 
-			var totalCount = docs.length;
-			// count relevance and sort results
-			docs = _(docs).sortBy(function(doc) {
+			var totalCount = docs.length,
+				processMethod = options.sort ? 'map' : 'sortBy';
+
+			// count relevance and sort results if sort option not defined
+			docs = _(docs)[processMethod](function(doc) {
 				var relevance = processRelevance(tokens, doc.get(keywordsPath));
 				doc.set(relevancePath, relevance);
-				return -relevance;
+				return processMethod === 'map' ? doc : -relevance;
 			});
 
 			// slice results and find full objects by ids
@@ -57,19 +60,21 @@ module.exports = function(schema, options) {
 				docs = docs.slice(options.skip || 0, options.skip + options.limit);
 			}
 
-			var docsHash = _(docs).indexBy('_id');
+			var docsHash = _(docs).indexBy('_id'),
+				findConditions = _({
+					_id: {$in: _(docs).pluck('_id')}
+				}).extend(options.conditions);
 
-			mongoose.Model.find.call(self, {
-				_id: {$in: _(docs).pluck('_id')}
-			}, fields, function(err, docs) {
+			mongoose.Model.find.call(self, findConditions, fields, findOptions,
+			function(err, docs) {
 				if (err) return callback(err);
 
 				// sort result docs
 				callback(null, {
-					results: _(docs).sortBy(function(doc) {
+					results: _(docs)[processMethod](function(doc) {
 						var relevance = docsHash[doc._id].get(relevancePath);
 						doc.set(relevancePath, relevance);
-						return relevance;
+						return processMethod === 'map' ? doc : -relevance;
 					}),
 					totalCount: totalCount
 				});

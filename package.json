@@ -1,7 +1,11 @@
 {
   "name": "mongoose-search-plugin",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "mongoose full-text search plugin",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/freakycue/mongoose-search-plugin"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha test/index.js"
