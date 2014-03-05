@@ -40,11 +40,12 @@ Simple mongoose plugin for full text search.
 ### Initialization
 `plugin` accepts options argument with following format:
 ``` js
-  {
+  var options = {
     keywordsPath: '_keywords', // path for keywords, `_keywords` as default
     relevancePath: '_relevance', // path for relevance number, '_relevance' as default
     fields: [], // array of fields to use as keywords (can be String or [String] types)
-  }
+  };
+  Schema.plugin(searchPlugin(options));
 ```
 
 ### Search
@@ -65,7 +66,7 @@ use `setKeywords` method.
 ``` js
   Model.setKeywords(function(err) {
     // ...
-  })
+  });
 ```
 
 ### License: MIT
