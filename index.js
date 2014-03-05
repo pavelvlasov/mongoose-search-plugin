@@ -40,7 +40,8 @@ module.exports = function(schema, options) {
 		conditions[keywordsPath] = {$in: tokens};
 		outFields[keywordsPath] = 1;
 
-		mongoose.Model.find.call(this, conditions, outFields, findOptions, function(err, docs) {
+		mongoose.Model.find.call(this, conditions, outFields, findOptions,
+		function(err, docs) {
 			if (err) return callback(err);
 
 			var totalCount = docs.length,
