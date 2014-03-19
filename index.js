@@ -1,12 +1,13 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-	stemmer = require('natural').PorterStemmer,
-	distance = require('natural').JaroWinklerDistance,
+	natural = require('natural'),
 	_ = require('underscore');
 
 module.exports = function(schema, options) {
-	var fields = options.fields,
+	var stemmer = natural[options.stemmer || 'PorterStemmer'],
+		distance = natural[options.distance || 'JaroWinklerDistance'],
+		fields = options.fields,
 		keywordsPath = options.keywordsPath || '_keywords',
 		relevancePath = options.relevancePath || '_relevance';
 
