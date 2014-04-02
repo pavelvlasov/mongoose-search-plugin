@@ -73,3 +73,7 @@ use `setKeywords` method.
 ```
 
 ### License: MIT
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/freakycue/mongoose-search-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
