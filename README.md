@@ -1,7 +1,7 @@
 # Mongoose full-text search plugin
 
 Simple mongoose plugin for full text search.
-Uses [natural] https://github.com/NaturalNode/natural stemming and distance algorythms.
+Uses [natural](https://github.com/NaturalNode/natural) stemming and distance algorythms.
 
 ## Example
 ``` js
