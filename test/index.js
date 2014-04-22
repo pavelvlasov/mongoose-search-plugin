@@ -6,7 +6,8 @@ var expect = require('expect.js'),
 
 require('./testModel');
 
-var TestModel = mongoose.model('TestModel');
+var TestModel = mongoose.model('TestModel'),
+	EmbeddedTestModel = mongoose.model('EmbeddedTestModel');
 
 describe('search plugin', function() {
 	var raw = {
@@ -152,6 +153,47 @@ describe('search plugin', function() {
 			expect(_(data.results).all(function(item) {
 				return item.index > 50;
 			})).to.be.ok();
+			done(err);
+		});
+	});
+
+	var embedded;
+	it('create document embedded document', function(done) {
+		embedded = new EmbeddedTestModel({
+			title: 'embedded',
+			description: 'embedded'
+		});
+		embedded.save(done);
+	});
+
+	it('create document with ref option', function(done) {
+		var obj = new TestModel({
+			title: 'with embedded',
+			description: 'with embedded',
+			tags: ['with', 'embedded'],
+			embedded: embedded._id 
+		});
+		obj.save(done);
+	});
+
+	it('search document with populate option', function(done) {
+		TestModel.search('embedded', null, {
+			populate: [{path: 'embedded'}]
+		}, function(err, data) {
+			expect(data.results.length).equal(1);
+			expect(data.results[0].embedded._id).to.be.ok();
+			done(err);
+		});
+	});
+
+	it('search document with populate option and fields options',
+	function(done) {
+		TestModel.search('embedded', null, {
+			populate: [{path: 'embedded', fields: {title: 0}}]
+		}, function(err, data) {
+			expect(data.results.length).equal(1);
+			expect(data.results[0].embedded._id).to.be.ok();
+			expect(data.results[0].embedded.title).not.to.be.ok();
 			done(err);
 		});
 	});

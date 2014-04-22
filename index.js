@@ -67,8 +67,17 @@ module.exports = function(schema, options) {
 					_id: {$in: _(docs).pluck('_id')}
 				}).extend(options.conditions);
 
-			mongoose.Model.find.call(self, findConditions, fields, findOptions,
-			function(err, docs) {
+			var cursor = mongoose.Model.find
+			.call(self, findConditions, fields, findOptions);
+
+			// populate
+			if (options.populate) {
+				options.populate.forEach(function(object) {
+					cursor.populate(object.path, object.fields);
+				});
+			}
+
+			cursor.exec(function(err, docs) {
 				if (err) return callback(err);
 
 				// sort result docs

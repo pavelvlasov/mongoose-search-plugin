@@ -60,6 +60,15 @@ Method will return object of the following format:
     totalCount: 0 // number of objects, that matched criteries
   }
 ```
+Options has following format:
+```js
+  {
+    conditions: {}, // criteria for query
+    sort: {} // sorting parameters
+    populate: [{path: '', fields: ''}], // array of paths to populate
+    ... and other options of Model.find method
+  }
+```
 By default results sorts by relevance field, that defined in `relevancePath`
 plugin option.
 
