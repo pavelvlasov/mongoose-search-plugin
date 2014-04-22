@@ -1,4 +1,4 @@
-# Mongoose full-text search plugin
+# Mongoose full-text search plugin [![Build Status](https://travis-ci.org/freakycue/mongoose-search-plugin.svg?branch=master)](https://travis-ci.org/freakycue/mongoose-search-plugin)
 
 Simple mongoose plugin for full text search.
 Uses [natural](https://github.com/NaturalNode/natural) stemming and distance algorythms.
