@@ -10,7 +10,7 @@ Uses [natural](https://github.com/NaturalNode/natural) stemming and distance alg
 
   var Schema = mongoose.Schema({
     title: String,
-    descirption: String,
+    description: String,
     tags: [String]
   });
 
