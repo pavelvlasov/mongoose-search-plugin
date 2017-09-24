@@ -1,7 +1,7 @@
-# Mongoose full-text search plugin [![Build Status](https://travis-ci.org/freakycue/mongoose-search-plugin.svg?branch=master)](https://travis-ci.org/freakycue/mongoose-search-plugin)
+# Mongoose full-text search plugin
 
 Simple mongoose plugin for full text search.
-Uses [natural](https://github.com/NaturalNode/natural) stemming and distance algorythms.
+Uses [natural](https://github.com/NaturalNode/natural) stemming and distance algorithms.
 
 ## Example
 ``` js
@@ -24,7 +24,7 @@ Uses [natural](https://github.com/NaturalNode/natural) stemming and distance alg
     sort: {title: 1},
     limit: 10
   }, function(err, data) {
-    // array of finded results
+    // array of found results
     console.log(data.results);
     // count of all matching objects
     console.log(data.totalCount);
@@ -46,13 +46,16 @@ Uses [natural](https://github.com/NaturalNode/natural) stemming and distance alg
     relevancePath: '_relevance', // path for relevance number, '_relevance' as default
     fields: [], // array of fields to use as keywords (can be String or [String] types),
     stemmer: 'PorterStemmer', // natural stemmer, PorterStemmer as default
-    distance: 'JaroWinklerDistance' // distance algorythm, JaroWinklerDistance as default
+    distance: 'JaroWinklerDistance' // distance algorithm, JaroWinklerDistance as default
   };
   Schema.plugin(searchPlugin(options));
 ```
 
 ### Search
-`Model.search(query, fields, options, callback)` options are optional.
+`Model.search(query, fields, options, callback)` 
+
+Options are optional. The `fields` parameter can be an empty object to return all fields.
+
 Method will return object of the following format:
 ``` js
   {
@@ -80,5 +83,3 @@ use `setKeywords` method.
     // ...
   });
 ```
-
-### License: MIT
