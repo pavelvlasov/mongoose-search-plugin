@@ -48,7 +48,7 @@ Uses [natural](https://github.com/NaturalNode/natural) stemming and distance alg
     stemmer: 'PorterStemmer', // natural stemmer, PorterStemmer as default
     distance: 'JaroWinklerDistance' // distance algorithm, JaroWinklerDistance as default
   };
-  Schema.plugin(searchPlugin(options));
+  Schema.plugin(searchPlugin, options);
 ```
 
 ### Search
